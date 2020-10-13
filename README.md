@@ -20,7 +20,7 @@ Para esse teste foram criadas as seguintes tabelas:
     * city: string(255)
     * neighborhood: string (255)
     * street: string(255)
-    * number: integer(255)
+    * number: integer unsigned nullable
     * details: text nullable
     * created_at: datetime
     * updated_at: datetime
