@@ -9,7 +9,7 @@ Para esse teste foram criadas as seguintes tabelas:
     * name: string(255)
     * email: string(255)
     * type: enum('private', 'legal')
-    * identifier: integer(14)
+    * identifier: string(14)
     * created_at: datetime
     * updated_at: datetime
      
