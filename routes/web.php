@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EstateController;
+use App\Http\Controllers\OwnerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia\Inertia::render('Dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('owners', OwnerController::class)->only(['index', 'store', 'destroy']);
+
+    Route::get('/estates', [EstateController::class, 'index'])->name('estates.index');
+});

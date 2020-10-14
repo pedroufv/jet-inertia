@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Actions\Owners\CreateNewOwner;
+use App\Actions\Owners\DeleteOwner;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OwnerStoreRequest;
 use App\Http\Requests\OwnerUpdateRequest;
@@ -22,11 +24,12 @@ class OwnerController extends Controller
 
     /**
      * @param OwnerStoreRequest $request
+     * @param CreateNewOwner $creator
      * @return OwnerResource
      */
-    public function store(OwnerStoreRequest $request)
+    public function store(OwnerStoreRequest $request, CreateNewOwner $creator)
     {
-        return new OwnerResource(Owner::create($request->validated()));
+        return new OwnerResource($creator->create($request->validated()));
     }
 
     /**
@@ -52,12 +55,13 @@ class OwnerController extends Controller
 
     /**
      * @param Owner $owner
+     * @param DeleteOwner $destroyer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Owner $owner)
+    public function destroy(Owner $owner, DeleteOwner $destroyer)
     {
         try {
-            $owner->delete();
+            $destroyer->delete($owner);
             return response()->json([], 204);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
