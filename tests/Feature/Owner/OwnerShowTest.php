@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Owner;
 
-use App\Helpers\Sanitizer;
 use App\Models\Owner;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
