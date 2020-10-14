@@ -60,7 +60,7 @@ class OwnerController extends Controller
             $owner->delete();
             return response()->json([], 204);
         } catch (\Exception $exception) {
-            return response()->json(new OwnerResource($owner), 500);
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 }

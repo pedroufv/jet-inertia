@@ -60,7 +60,7 @@ class EstateController extends Controller
             $estate->delete();
             return response()->json([], 204);
         } catch (\Exception $exception) {
-            return response()->json(new EstateResource($estate), 500);
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 }
