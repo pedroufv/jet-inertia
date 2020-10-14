@@ -13,21 +13,18 @@ class OwnerController extends Controller
     public function index()
     {
         return Inertia::render('Owners/Index', [
-            'owners' => Owner::all(),
+            'owners' => Owner::withCount('estates')->get(),
         ]);
     }
 
     public function store(OwnerStoreRequest $request, CreateNewOwner $creator)
     {
         $creator->create($request->validated());
-
-        return back();
+        return back()->with('flash', 'Created successfully.');
     }
 
     public function destroy(Owner $owner, DeleteOwner $destroyer)
     {
-        logger($owner);
-
         try {
             $destroyer->delete($owner);
             return back();

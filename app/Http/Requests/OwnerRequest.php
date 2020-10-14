@@ -18,7 +18,7 @@ class OwnerRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:owners,email'],
             'type' => ['required'],
             'identifier' => ['required', 'string'],
         ];

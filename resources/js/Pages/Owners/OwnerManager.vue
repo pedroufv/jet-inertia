@@ -7,7 +7,7 @@
 
             <template #description>
                 Allow registration of a owner with some characteristics:
-                email must be valid, email, street, neighborhood, city and state are required fields.
+                full name, e-mail must be valid and unique, type (legal or private) and identifier according to type.
             </template>
 
             <template #form>
@@ -163,7 +163,7 @@
                     type: '',
                     identifier: '',
                 }, {
-                    bag: 'createOwner',
+                    bag: 'ownerStore',
                     resetOnSuccess: true,
                 }),
 
@@ -174,12 +174,9 @@
 
         methods: {
             createOwner() {
-                console.log(this.createOwnerForm);
-
                 this.createOwnerForm.post(route('owners.store'), {
                     preserveScroll: true,
-                }).then(response => {
-                    console.log(response)
+                }).catch(error => {
                 })
             },
 
