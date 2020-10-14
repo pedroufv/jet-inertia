@@ -19,7 +19,7 @@ class EstateUpdateTest extends TestCase
     {
         $estate = Estate::factory()->create();
 
-        $response = $this->json('PUT', route('estates.update', $estate), []);
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.estates.update', $estate), []);
 
         $response->assertJsonValidationErrors('state');
         $response->assertJsonValidationErrors('city');
@@ -36,7 +36,7 @@ class EstateUpdateTest extends TestCase
 
         $estateFake = Estate::factory()->make();
 
-        $response = $this->json('PUT', route('estates.update', $estate), $estateFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.estates.update', $estate), $estateFake->toArray());
 
         $response->assertOk();
 

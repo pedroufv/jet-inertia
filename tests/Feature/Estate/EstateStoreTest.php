@@ -16,7 +16,7 @@ class EstateStoreTest extends TestCase
      */
     public function checkEstateCreateRequiredValidation()
     {
-        $response = $this->json('POST', route('estates.store'), []);
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.estates.store'), []);
 
         $response->assertJsonValidationErrors('state');
         $response->assertJsonValidationErrors('city');
@@ -31,7 +31,7 @@ class EstateStoreTest extends TestCase
     {
         $estateFake = Estate::factory()->make();
 
-        $response = $this->json('POST', route('estates.store'), $estateFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.estates.store'), $estateFake->toArray());
 
         $response->assertCreated();
 

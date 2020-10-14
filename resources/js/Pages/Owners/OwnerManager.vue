@@ -1,0 +1,200 @@
+<template>
+    <div>
+        <jet-form-section @submitted="createOwner">
+            <template #title>
+                Create Owner
+            </template>
+
+            <template #description>
+                Allow registration of a owner with some characteristics:
+                email must be valid, email, street, neighborhood, city and state are required fields.
+            </template>
+
+            <template #form>
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="name" value="Name" />
+                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="createOwnerForm.name" autofocus />
+                    <jet-input-error :message="createOwnerForm.error('name')" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="email" value="Email" />
+                    <jet-input id="email" type="text" class="mt-1 block w-full" v-model="createOwnerForm.email" autofocus />
+                    <jet-input-error :message="createOwnerForm.error('email')" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="type" value="Type" />
+                    <select name="type" class="border block w-full shadow p-2 bg-white" v-model="createOwnerForm.type" autofocus>
+                        <option value="private">Private</option>
+                        <option value="legal">Legal</option>
+                    </select>
+                    <jet-input-error :message="createOwnerForm.error('type')" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <jet-label for="identifier" value="Identifier" />
+                    <jet-input id="identifier"
+                               type="text"
+                               class="mt-1 block w-full"
+                               v-model="createOwnerForm.identifier"
+                               v-mask="['###.###.###-##', '##.###.###/####-##']"
+                               autofocus />
+                    <jet-input-error :message="createOwnerForm.error('identifier')" class="mt-2" />
+                </div>
+
+            </template>
+
+            <template #actions>
+                <jet-action-message :on="createOwnerForm.recentlySuccessful" class="mr-3">
+                    Created.
+                </jet-action-message>
+
+                <jet-button :class="{ 'opacity-25': createOwnerForm.processing }" :disabled="createOwnerForm.processing">
+                    Create
+                </jet-button>
+            </template>
+        </jet-form-section>
+
+        <div v-if="owners.length > 0">
+            <jet-section-border />
+
+            <div class="mt-10 sm:mt-0">
+                <jet-action-section>
+                    <template #title>
+                        Manage Owners
+                    </template>
+
+                    <template #description>
+                        You may delete any of your existing owners if they are no related to a estate.
+                    </template>
+
+                    <template #content>
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between" v-for="owner in owners">
+                                <div>
+                                    {{ owner.name }}
+                                </div>
+
+                                <div>
+                                    {{ owner.email }}
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="text-sm text-gray-400">
+                                        Has {{ owner.estates_count }} estates
+                                    </div>
+
+                                    <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" @click="confirmOwnerDeletion(owner)">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </jet-action-section>
+            </div>
+        </div>
+
+        <jet-confirmation-modal :show="ownerBeingDeleted" @close="ownerBeingDeleted = null">
+            <template #title>
+                Delete Owner
+            </template>
+
+            <template #content>
+                Are you sure you would like to delete this Owner?
+            </template>
+
+            <template #footer>
+                <jet-secondary-button @click.native="ownerBeingDeleted = null">
+                    Nevermind
+                </jet-secondary-button>
+
+                <jet-danger-button class="ml-2" @click.native="deleteOwner" :class="{ 'opacity-25': deleteOwnerForm.processing }" :disabled="deleteOwnerForm.processing">
+                    Delete
+                </jet-danger-button>
+            </template>
+        </jet-confirmation-modal>
+    </div>
+</template>
+
+<script>
+    import JetFormSection from './../../Jetstream/FormSection'
+    import JetActionMessage from "../../Jetstream/ActionMessage";
+    import JetActionSection from "../../Jetstream/ActionSection";
+    import JetButton from "../../Jetstream/Button";
+    import JetConfirmationModal from "../../Jetstream/ConfirmationModal";
+    import JetDangerButton from "../../Jetstream/DangerButton";
+    import JetDialogModal from "../../Jetstream/DialogModal";
+    import JetInput from "../../Jetstream/Input";
+    import JetInputError from "../../Jetstream/InputError";
+    import JetLabel from "../../Jetstream/Label";
+    import JetSecondaryButton from "../../Jetstream/SecondaryButton";
+    import JetSectionBorder from "../../Jetstream/SectionBorder";
+    import {mask} from 'vue-the-mask';
+
+    export default {
+        components: {
+            JetActionMessage,
+            JetActionSection,
+            JetButton,
+            JetConfirmationModal,
+            JetDangerButton,
+            JetDialogModal,
+            JetFormSection,
+            JetInput,
+            JetInputError,
+            JetLabel,
+            JetSecondaryButton,
+            JetSectionBorder,
+        },
+
+        directives: {mask},
+
+        props: [
+            'owners',
+        ],
+
+        data() {
+            return {
+                createOwnerForm: this.$inertia.form({
+                    name: '',
+                    email: '',
+                    type: '',
+                    identifier: '',
+                }, {
+                    bag: 'createOwner',
+                    resetOnSuccess: true,
+                }),
+
+                deleteOwnerForm: this.$inertia.form(),
+                ownerBeingDeleted: null,
+            }
+        },
+
+        methods: {
+            createOwner() {
+                console.log(this.createOwnerForm);
+
+                this.createOwnerForm.post(route('owners.store'), {
+                    preserveScroll: true,
+                }).then(response => {
+                    console.log(response)
+                })
+            },
+
+            confirmOwnerDeletion(owner) {
+                this.ownerBeingDeleted = owner
+            },
+
+            deleteOwner() {
+                this.deleteOwnerForm.delete(route('owners.destroy', this.ownerBeingDeleted), {
+                    preserveScroll: true,
+                    preserveState: true,
+                }).then(() => {
+                    this.ownerBeingDeleted = null
+                })
+            },
+        }
+    }
+</script>

@@ -17,7 +17,7 @@ class OwnerStoreTest extends TestCase
      */
     public function checkOnwerCreateRequiredValidation()
     {
-        $response = $this->json('POST', route('owners.store'), []);
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), []);
 
         $response->assertJsonValidationErrors('name');
         $response->assertJsonValidationErrors('email');
@@ -34,7 +34,7 @@ class OwnerStoreTest extends TestCase
             'email' => 'invalid-email',
         ]);
 
-        $response = $this->json('POST', route('owners.store'), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), $ownerFake->toArray());
 
         $response->assertJsonValidationErrors([
             'email' => __('validation.email', ['attribute' => 'email']),
@@ -51,7 +51,7 @@ class OwnerStoreTest extends TestCase
             'identifier' => '000.000.000-00'
         ]);
 
-        $response = $this->json('POST', route('owners.store'), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), $ownerFake->toArray());
 
         $response->assertJsonValidationErrors([
             'identifier' => __('validation.cpf', ['attribute' => 'identifier']),
@@ -68,7 +68,7 @@ class OwnerStoreTest extends TestCase
             'identifier' => '00.000.000/0000-00'
         ]);
 
-        $response = $this->json('POST', route('owners.store'), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), $ownerFake->toArray());
 
         $response->assertJsonValidationErrors([
             'identifier' => __('validation.cnpj', ['attribute' => 'identifier']),
@@ -85,7 +85,7 @@ class OwnerStoreTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('POST', route('owners.store'), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), $ownerFake->toArray());
 
         $response->assertCreated();
 
@@ -105,7 +105,7 @@ class OwnerStoreTest extends TestCase
             'identifier' => '66.642.293/0001-19'
         ]);
 
-        $response = $this->json('POST', route('owners.store'), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('POST', route('api.owners.store'), $ownerFake->toArray());
 
         $response->assertCreated();
 

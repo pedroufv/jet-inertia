@@ -18,7 +18,7 @@ class EstateShowTest extends TestCase
     {
         $estate = Estate::factory()->create();
 
-        $response = $this->json('GET', route('estates.show', $estate));
+        $response = $this->actingAs($this->getUser())->json('GET', route('api.estates.show', $estate));
 
         $response->assertJsonStructure([
             'data' => [

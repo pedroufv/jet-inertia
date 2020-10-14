@@ -18,7 +18,7 @@ class EstateIndexTest extends TestCase
     {
         Estate::factory()->count(30)->create();
 
-        $response = $this->json('GET', route('estates.index'));
+        $response = $this->actingAs($this->getUser())->json('GET', route('api.estates.index'));
 
         $response->assertJsonStructure([
             'data' => [
