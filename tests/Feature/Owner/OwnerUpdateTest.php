@@ -15,7 +15,7 @@ class OwnerUpdateTest extends TestCase
     /**
      * @test
      */
-    public function checkRequiredValidation()
+    public function checkOnwerUpdateRequiredValidation()
     {
         $owner = Owner::factory()->create([
             'type' => 'private',

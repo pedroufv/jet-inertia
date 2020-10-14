@@ -15,7 +15,7 @@ class OwnerStoreTest extends TestCase
     /**
      * @test
      */
-    public function checkRequiredValidation()
+    public function checkOnwerCreateRequiredValidation()
     {
         $response = $this->json('POST', route('owners.store'), []);
 

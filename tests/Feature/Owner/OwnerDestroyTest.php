@@ -25,6 +25,6 @@ class OwnerDestroyTest extends TestCase
 
         $response->assertNoContent(204);
 
-        $this->assertDatabaseMissing('owners', $owner->toArray());
+        $this->assertDatabaseMissing('owners', $owner->getAttributes());
     }
 }
