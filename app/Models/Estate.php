@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,10 @@ use Illuminate\Support\Str;
  * @property string|null $details
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @method static Model|$this create(array $attributes = [])
+ * @method static LengthAwarePaginator paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+ * @see \Illuminate\Database\Eloquent\Builder
  */
 class Estate extends Model
 {

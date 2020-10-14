@@ -15,7 +15,7 @@ class CreateEstatesTable extends Migration
     {
         Schema::create('estates', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignid('onwer_id')->nullable()->constrained();
+            $table->foreignid('owner_id')->nullable()->constrained();
             $table->string('state');
             $table->string('city');
             $table->string('neighborhood');
