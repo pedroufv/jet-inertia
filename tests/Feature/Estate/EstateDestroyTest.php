@@ -18,7 +18,7 @@ class EstateDestroyTest extends TestCase
     {
         $estate = Estate::factory()->create();
 
-        $response = $this->json('DELETE', route('estates.destroy', $estate));
+        $response = $this->actingAs($this->getUser())->json('DELETE', route('api.estates.destroy', $estate));
 
         $response->assertNoContent(204);
 

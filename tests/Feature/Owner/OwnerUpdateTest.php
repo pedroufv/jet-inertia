@@ -22,7 +22,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), []);
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), []);
 
         $response->assertJsonValidationErrors('name');
         $response->assertJsonValidationErrors('email');
@@ -40,7 +40,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), ['email' => 'invalid-email']);
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), ['email' => 'invalid-email']);
 
         $response->assertJsonValidationErrors([
             'email' => __('validation.email', ['attribute' => 'email']),
@@ -57,7 +57,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), ['type' => 'private', 'identifier' => '000.000.000-00']);
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), ['type' => 'private', 'identifier' => '000.000.000-00']);
 
         $response->assertJsonValidationErrors([
             'identifier' => __('validation.cpf', ['attribute' => 'identifier']),
@@ -74,7 +74,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '66.642.293/0001-19'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), ['type' => 'legal', 'identifier' => '00.000.000/0000-00']);
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), ['type' => 'legal', 'identifier' => '00.000.000/0000-00']);
 
         $response->assertJsonValidationErrors([
             'identifier' => __('validation.cnpj', ['attribute' => 'identifier']),
@@ -96,7 +96,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '386.930.750-12'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), $ownerFake->toArray());
 
         $response->assertOk();
 
@@ -121,7 +121,7 @@ class OwnerUpdateTest extends TestCase
             'identifier' => '28.717.313/0001-84'
         ]);
 
-        $response = $this->json('PUT', route('owners.update', $owner), $ownerFake->toArray());
+        $response = $this->actingAs($this->getUser())->json('PUT', route('api.owners.update', $owner), $ownerFake->toArray());
 
         $response->assertOk();
 

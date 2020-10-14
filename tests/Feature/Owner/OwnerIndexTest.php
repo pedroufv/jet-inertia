@@ -18,7 +18,7 @@ class OwnerIndexTest extends TestCase
     {
         Owner::factory()->count(30)->create();
 
-        $response = $this->json('GET', route('owners.index'));
+        $response = $this->actingAs($this->getUser())->json('GET', route('api.owners.index'));
 
         $response->assertJsonStructure([
             'data' => [

@@ -21,7 +21,7 @@ class OwnerDestroyTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('DELETE', route('owners.destroy', $owner));
+        $response = $this->actingAs($this->getUser())->json('DELETE', route('api.owners.destroy', $owner));
 
         $response->assertNoContent(204);
 

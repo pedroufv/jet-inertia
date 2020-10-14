@@ -21,7 +21,7 @@ class OwnerShowTest extends TestCase
             'identifier' => '788.037.060-97'
         ]);
 
-        $response = $this->json('GET', route('owners.show', $owner));
+        $response = $this->actingAs($this->getUser())->json('GET', route('api.owners.show', $owner));
 
         $response->assertJsonStructure([
             'data' => [
