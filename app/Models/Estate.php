@@ -64,6 +64,17 @@ class Estate extends Model
      */
     public $incrementing = false;
 
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'short_address',
+        'full_address',
+    ];
+
     /**
      * Handle the model "booted" event.
      *
@@ -82,5 +93,33 @@ class Estate extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(Owner::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortAddressAttribute(): string
+    {
+        $address = $this->street . ', ';
+        $address .= $this->number ? $this->number . ', ' : '';
+        $address .= $this->city . ', ';
+        $address .= $this->state;
+
+        return $address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullAddressAttribute(): string
+    {
+        $address = $this->street . ', ';
+        $address .= $this->number ? $this->number . ', ' : '';
+        $address .= $this->details ? $this->details . ', ' : '';
+        $address .= $this->neighborhood . ', ';
+        $address .= $this->city . ', ';
+        $address .= $this->state;
+
+        return $address;
     }
 }

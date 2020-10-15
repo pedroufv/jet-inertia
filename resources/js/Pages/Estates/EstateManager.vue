@@ -91,7 +91,7 @@
                         <div class="space-y-6">
                             <div class="flex items-center justify-between" v-for="estate in estates">
                                 <div>
-                                    {{ `${estate.street}, ${estate.city}, ${estate.state}` }}
+                                    {{ estate.short_address }}
                                 </div>
 
                                 <div class="flex items-center">
