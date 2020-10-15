@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,9 +22,11 @@ use Illuminate\Support\Str;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
- * @method static Model|$this create(array $attributes = [])
- * @method static LengthAwarePaginator paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+ * @method static \Illuminate\Database\Eloquent\Model|$this create(array $attributes = [])
+ * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
+ * @method static \Illuminate\Database\Query\Builder whereNull($columns, $boolean = 'and', $not = false)
  * @see \Illuminate\Database\Eloquent\Builder
+ * @see \Illuminate\Database\Query\Builder
  */
 class Estate extends Model
 {

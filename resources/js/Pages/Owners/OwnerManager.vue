@@ -82,8 +82,14 @@
 
                                 <div class="flex items-center">
                                     <div class="text-sm text-gray-400">
-                                        Has {{ owner.estates_count }} estates
+                                        Has {{ owner.estates.length }} estates
                                     </div>
+
+                                    <button class="cursor-pointer ml-6 text-sm text-gray-400 underline focus:outline-none"
+                                            @click="manageOwnerEstates(owner)"
+                                            v-if="unowned.concat(owner.estates).length > 0">
+                                        Estates
+                                    </button>
 
                                     <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none" @click="confirmOwnerDeletion(owner)">
                                         Delete
@@ -95,6 +101,33 @@
                 </jet-action-section>
             </div>
         </div>
+
+        <jet-dialog-modal :show="managingEstatesFor" @close="managingEstatesFor = null">
+            <template #title>
+                API Token Permissions
+            </template>
+
+            <template #content>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div v-for="estate in availableEstates">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox" :value="estate.id" v-model="updateOwnerForm.estates">
+                            <span class="ml-2 text-sm text-gray-600">{{ estate.short_address }}</span>
+                        </label>
+                    </div>
+                </div>
+            </template>
+
+            <template #footer>
+                <jet-secondary-button @click.native="managingEstatesFor = null">
+                    Nevermind
+                </jet-secondary-button>
+
+                <jet-button class="ml-2" @click.native="updateOwner" :class="{ 'opacity-25': updateOwnerForm.processing }" :disabled="updateOwnerForm.processing">
+                    Save
+                </jet-button>
+            </template>
+        </jet-dialog-modal>
 
         <jet-confirmation-modal :show="ownerBeingDeleted" @close="ownerBeingDeleted = null">
             <template #title>
@@ -153,6 +186,7 @@
 
         props: [
             'owners',
+            'unowned',
         ],
 
         data() {
@@ -167,6 +201,16 @@
                     resetOnSuccess: true,
                 }),
 
+                updateOwnerForm: this.$inertia.form({
+                    estates: []
+                }, {
+                    resetOnSuccess: false,
+                    bag: 'ownerUpdate',
+                }),
+
+                availableEstates: [],
+                managingEstatesFor: null,
+
                 deleteOwnerForm: this.$inertia.form(),
                 ownerBeingDeleted: null,
             }
@@ -177,6 +221,24 @@
                 this.createOwnerForm.post(route('owners.store'), {
                     preserveScroll: true,
                 }).catch(error => {
+                })
+            },
+
+            manageOwnerEstates(owner) {
+
+                this.availableEstates = this.unowned.concat(owner.estates);
+
+                this.updateOwnerForm.estates = owner.estates
+
+                this.managingEstatesFor = owner
+            },
+
+            updateOwner() {
+                this.updateOwnerForm.put(route('owners.update', this.managingEstatesFor), {
+                    preserveScroll: true,
+                    preserveState: true,
+                }).then(response => {
+                    this.managingEstatesFor = null
                 })
             },
 

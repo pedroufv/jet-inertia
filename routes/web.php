@@ -12,7 +12,7 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('owners', OwnerController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('owners', OwnerController::class)->except(['create', 'show', 'edit']);
     Route::get('owners/select-input', [OwnerController::class, 'selectInput'])->name('owners.select-input');
 
     Route::resource('estates', EstateController::class)->only(['index', 'store', 'destroy']);
