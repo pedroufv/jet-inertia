@@ -84,7 +84,7 @@
                     </template>
 
                     <template #description>
-                        You may delete any of your existing estates if they are no related to a estate.
+                        You can safely delete any of your existing properties.
                     </template>
 
                     <template #content>
