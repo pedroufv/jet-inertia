@@ -1,0 +1,60 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./docker/php
+      args:
+        uid: ${USER_UID}
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www
+      - ./docker/php/uploads.ini/:/usr/local/etc/php/conf.d/uploads.ini
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - ${WEB_PORT}:80
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    depends_on:
+      - db
+    ports:
+      - ${HOST_PMA_PORT}:80
+    environment:
+      - PMA_ARBITRARY=1
+
+  db:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - db:/var/lib/mysql/
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${HOST_DB_PORT}:3306
+
+  db_testing:
+    image: mysql:latest
+    restart: unless-stopped
+    env_file:
+      - .env.testing
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+
+volumes:
+  db:
