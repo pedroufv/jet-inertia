@@ -43,13 +43,6 @@ class Owner extends Model
     ];
 
     /**
-     * The relationship counts that should be eager loaded on every query.
-     *
-     * @var array
-     */
-    protected $withCount = ['estates'];
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function estates(): HasMany

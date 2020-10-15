@@ -14,7 +14,7 @@ class EstateRequest extends FormRequest
     public function rules()
     {
         return [
-            'onwer_id' => ['sometimes', 'required', 'integer'],
+            'owner_id' => ['sometimes', 'required', 'integer'],
             'state' => ['required', 'string'],
             'city' => ['required', 'string'],
             'neighborhood' => ['required', 'string'],
