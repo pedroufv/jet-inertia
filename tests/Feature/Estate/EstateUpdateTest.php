@@ -40,6 +40,6 @@ class EstateUpdateTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertDatabaseHas('estates', $estateFake->toArray());
+        $this->assertDatabaseHas('estates', $estateFake->getAttributes());
     }
 }

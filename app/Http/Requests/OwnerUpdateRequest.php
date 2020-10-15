@@ -10,7 +10,7 @@ class OwnerUpdateRequest extends OwnerRequest
 
         return [
             'name' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique,owners,email'.$owner->id],
+            'email' => ['required', 'email', 'unique:owners,email,'.$owner->id],
             'type' => ['required'],
             'identifier' => ['required', 'string'],
         ];
