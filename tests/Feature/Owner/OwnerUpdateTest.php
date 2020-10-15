@@ -100,7 +100,7 @@ class OwnerUpdateTest extends TestCase
 
         $response->assertOk();
 
-        $data = $ownerFake->toArray();
+        $data = $ownerFake->getAttributes();
         $data['identifier'] = Sanitizer::onlyDigits($data['identifier']);
 
         $this->assertDatabaseHas('owners', $data);
@@ -125,7 +125,7 @@ class OwnerUpdateTest extends TestCase
 
         $response->assertOk();
 
-        $data = $ownerFake->toArray();
+        $data = $ownerFake->getAttributes();
         $data['identifier'] = Sanitizer::onlyDigits($data['identifier']);
 
         $this->assertDatabaseHas('owners', $data);
