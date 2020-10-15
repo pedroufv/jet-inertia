@@ -16,4 +16,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('owners/select-input', [OwnerController::class, 'selectInput'])->name('owners.select-input');
 
     Route::resource('estates', EstateController::class)->only(['index', 'store', 'destroy']);
+    Route::post('estates/csv', [EstateController::class, 'csv'])->name('estates.csv');
 });
