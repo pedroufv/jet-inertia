@@ -31,7 +31,7 @@ Este projeto funciona e foi construído sobre as seguintes tecnologias:
 * Framework: Laravel
 
 ## Arquivos de configuração
-Este projeto depende do arquivo `.env` e ' `.env.testing`, que não é versionado. Este arquivo pode ser criado a partir do seguintes modelos que se encontra na pasta `src`:
+Este projeto depende do arquivo `.env` e `.env.testing`, que não é versionado. Este arquivo pode ser criado a partir do seguintes modelos que se encontra na pasta `src`:
 
 * `.env.example`
 * `.env.testing.example`
@@ -94,13 +94,3 @@ sudo chmod +x /usr/local/bin/docker-compose
 * `make seed` popula banco de dados
 * `make test` executa tests
 * `make up` inicializa os containers
-
-
-##### Teste Full Stack Laravel
-O objetivo deste teste é entendermos um pouco mais sobre seus conhecimentos de Frontend e Backend no Laravel.
-
-##### Requisitos
-- PHP 7.1+
-- Laravel (Preferência 5.8+)
-- Vue.JS
-- Docker Engine
