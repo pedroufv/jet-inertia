@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Actions\Estates\CreateNewEstate;
+use App\Actions\Estates\DeleteEstate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EstateStoreRequest;
 use App\Http\Requests\EstateUpdateRequest;
@@ -22,11 +24,12 @@ class EstateController extends Controller
 
     /**
      * @param EstateStoreRequest $request
+     * @param CreateNewEstate $creator
      * @return EstateResource
      */
-    public function store(EstateStoreRequest $request)
+    public function store(EstateStoreRequest $request, CreateNewEstate $creator)
     {
-        return new EstateResource(Estate::create($request->validated()));
+        return new EstateResource($creator->create($request->validated()));
     }
 
     /**
@@ -52,12 +55,13 @@ class EstateController extends Controller
 
     /**
      * @param Estate $estate
+     * @param DeleteEstate $destroyer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Estate $estate)
+    public function destroy(Estate $estate, DeleteEstate $destroyer)
     {
         try {
-            $estate->delete();
+            $destroyer->delete($estate);
             return response()->json([], 204);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);

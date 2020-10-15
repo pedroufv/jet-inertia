@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('owners', OwnerController::class)->only(['index', 'store', 'destroy']);
+    Route::get('owners/select-input', [OwnerController::class, 'selectInput'])->name('owners.select-input');
 
-    Route::get('/estates', [EstateController::class, 'index'])->name('estates.index');
+    Route::resource('estates', EstateController::class)->only(['index', 'store', 'destroy']);
 });
