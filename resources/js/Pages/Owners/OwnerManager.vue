@@ -104,7 +104,7 @@
 
         <jet-dialog-modal :show="managingEstatesFor" @close="managingEstatesFor = null">
             <template #title>
-                API Token Permissions
+                Onwer Estates
             </template>
 
             <template #content>
@@ -225,10 +225,11 @@
             },
 
             manageOwnerEstates(owner) {
+                let estatesIds = owner.estates.map( estate => estate.id)
 
                 this.availableEstates = this.unowned.concat(owner.estates);
 
-                this.updateOwnerForm.estates = owner.estates
+                this.updateOwnerForm.estates = estatesIds
 
                 this.managingEstatesFor = owner
             },

@@ -31,9 +31,7 @@ class OwnerController extends Controller
     {
         $owner->estates()->update(['owner_id' => null]);
 
-        $estateIds = array_map(fn ($item) => $item['id'], $request->estates);
-
-        Estate::whereIn('id', $estateIds)->update(['owner_id' => $owner->id]);
+        Estate::whereIn('id', $request->estates)->update(['owner_id' => $owner->id]);
 
         return back();
     }
