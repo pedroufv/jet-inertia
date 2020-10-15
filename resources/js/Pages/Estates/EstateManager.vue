@@ -74,6 +74,43 @@
             </template>
         </jet-form-section>
 
+        <div>
+            <jet-section-border />
+
+            <div class="mt-10 sm:mt-0">
+                <jet-form-section @submitted="uploadFile">
+                    <template #title>
+                        Import from CSV
+                    </template>
+
+                    <template #description>
+                        The CSV needs contains each line with following values on this order:
+                        state, city, neighborhood, street, number, details.
+                    </template>
+
+                    <template #form>
+                        <div class="col-span-6 sm:col-span-4">
+                            <input type="file" class="hidden" ref="csv" >
+                            <jet-secondary-button class="mr-2" type="button" @click.native.prevent="selectFile">
+                                Select A File
+                            </jet-secondary-button>
+                            <jet-input-error :message="uploadFileForm.error('csv')" class="mt-2" />
+                        </div>
+                    </template>
+
+                    <template #actions>
+                        <jet-action-message :on="uploadFileForm.recentlySuccessful" class="mr-3">
+                            Created.
+                        </jet-action-message>
+
+                        <jet-button :class="{ 'opacity-25': uploadFileForm.processing }" :disabled="uploadFileForm.processing">
+                            Send
+                        </jet-button>
+                    </template>
+                </jet-form-section>
+            </div>
+        </div>
+
         <div v-if="estates.length > 0">
             <jet-section-border />
 
@@ -183,6 +220,13 @@
                     resetOnSuccess: true,
                 }),
 
+                uploadFileForm: this.$inertia.form({
+                    csv: null,
+                }, {
+                    bag: 'estateCsv',
+                    resetOnSuccess: true,
+                }),
+
                 owners: [],
 
                 deleteEstateForm: this.$inertia.form(),
@@ -205,6 +249,19 @@
                 this.createEstateForm.post(route('estates.store'), {
                     preserveScroll: true,
                 })
+            },
+
+            selectFile() {
+                this.$refs.csv.click();
+            },
+
+            uploadFile() {
+                if (this.$refs.csv) {
+                    this.uploadFileForm.csv = this.$refs.csv.files[0]
+                    this.uploadFileForm.post(route('estates.csv'), {
+                        preserveScroll: true,
+                    })
+                }
             },
 
             confirmEstateDeletion(estate) {
